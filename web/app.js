@@ -2195,59 +2195,7 @@ const PDFViewerApplication = {
     const exportBtn = document.getElementById("exportSelectedButton");
 
     if (exportBtn) {
-      exportBtn.addEventListener("click", () => {
-        console.log("Export button clicked");
-
-        const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
-
-        // Get selected pages from checkboxes
-        const selectedPages = Array.from(
-          thumbnailViewer.container.querySelectorAll(
-            'input[type="checkbox"]:checked'
-          )
-        ).map(cb =>
-          parseInt(cb.parentElement.getAttribute("page-number"), 10)
-        );
-
-        console.log("Selected pages:", selectedPages);
-
-        if (!selectedPages.length) {
-          alert("No pages selected");
-          return;
-        }
-
-        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-          source: PDFViewerApplication,
-          data: {
-            pageNumbers: Uint32Array.from(selectedPages)
-          }
-        }
-
-
-
-
-      //   {
-      //   console.log("EXPORT CLICKED 1");
-      //   if (!this.pdfThumbnailViewer) return;
-      //   console.log("EXPORT CLICKED 2");
-
-      //   const selected =
-      //         // viewer._getSelectedPages?.() || [];
-      //         PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-
-      //   console.log("Selected pages:", selected);
-
-      //   if (!selected?.length) {
-      //     alert("No pages selected");
-      //     return;
-      //   }
-
-      //   this.eventBus.dispatch("savepageseditedpdf", {
-      //     source: this,
-      //     data: { pageNumbers: selected }
-      //   });
-      // }
-                                );
+      exportBtn.addEventListener("click", () => );
     }
     // // /////
 
