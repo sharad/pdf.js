@@ -2195,7 +2195,33 @@ const PDFViewerApplication = {
     const exportBtn = document.getElementById("exportSelectedButton");
 
     if (exportBtn) {
-      exportBtn.addEventListener("click", () =>
+      exportBtn.addEventListener("click", () => {
+        console.log("Export button clicked");
+
+        const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+
+        // Get selected pages from checkboxes
+        const selectedPages = Array.from(
+          thumbnailViewer.container.querySelectorAll(
+            'input[type="checkbox"]:checked'
+          )
+        ).map(cb =>
+          parseInt(cb.parentElement.getAttribute("page-number"), 10)
+        );
+
+        console.log("Selected pages:", selectedPages);
+
+        if (!selectedPages.length) {
+          alert("No pages selected");
+          return;
+        }
+
+        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+          source: PDFViewerApplication,
+          data: {
+            pageNumbers: Uint32Array.from(selectedPages)
+          }
+        }
 
 
 
