@@ -2522,34 +2522,7 @@ PDFViewerApplication.initializedPromise.then(() => {
     return;
   }
 
-  btn.addEventListener("click", () => {
-    console.log("Export button clicked");
-
-    const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
-
-    // Get selected pages from checkboxes
-    const selectedPages = Array.from(
-      thumbnailViewer.container.querySelectorAll(
-        'input[type="checkbox"]:checked'
-      )
-    ).map(cb =>
-      parseInt(cb.parentElement.getAttribute("page-number"), 10)
-    );
-
-    console.log("Selected pages:", selectedPages);
-
-    if (!selectedPages.length) {
-      alert("No pages selected");
-      return;
-    }
-
-    PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-      source: PDFViewerApplication,
-      data: {
-        pageNumbers: Uint32Array.from(selectedPages)
-      }
-    });
-  });
+  btn.addEventListener("click", () => );
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
