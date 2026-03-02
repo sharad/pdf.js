@@ -2515,31 +2515,7 @@ PDFViewerApplication.initializedPromise.then(() => {
     return;
   }
 
-  btn.addEventListener("click", () => {
-    console.log("EXPORT CLICKED");
-
-    const viewer =
-          PDFViewerApplication.pdfThumbnailViewer;
-
-    const selected =
-          PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-    // viewer?._getSelectedPages?.() || [];
-
-    console.log("Selected:", selected);
-
-    if (!selected.length) {
-      alert("No pages selected");
-      return;
-    }
-
-    PDFViewerApplication.eventBus.dispatch(
-      "savepageseditedpdf",
-      {
-        source: PDFViewerApplication,
-        data: { pageNumbers: selected }
-      }
-    );
-  });
+  btn.addEventListener("click", () => );
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
