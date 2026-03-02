@@ -2219,9 +2219,6 @@ const PDFViewerApplication = {
     }
     // // /////
 
-
-
-
   },
 
   bindWindowEvents() {
