@@ -2198,15 +2198,16 @@ const PDFViewerApplication = {
       exportBtn.addEventListener("click", () => {
         console.log("Export button clicked");
 
+        const { PDFDocument } = await import("pdf-lib");
+
         const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
 
-        // Get selected pages from checkboxes
         const selectedPages = Array.from(
           thumbnailViewer.container.querySelectorAll(
             'input[type="checkbox"]:checked'
           )
         ).map(cb =>
-          parseInt(cb.parentElement.getAttribute("page-number"), 10)
+          parseInt(cb.parentElement.getAttribute("page-number"), 10) - 1
         );
 
         console.log("Selected pages:", selectedPages);
@@ -2216,12 +2217,24 @@ const PDFViewerApplication = {
           return;
         }
 
-        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-          source: PDFViewerApplication,
-          data: {
-            pageNumbers: Uint32Array.from(selectedPages)
-          }
-        });
+        const originalBytes = await PDFViewerApplication.pdfDocument.getData();
+        const srcDoc = await PDFDocument.load(originalBytes);
+        const newDoc = await PDFDocument.create();
+
+        const copiedPages = await newDoc.copyPages(srcDoc, selectedPages);
+        copiedPages.forEach(page => newDoc.addPage(page));
+
+        const newBytes = await newDoc.save();
+
+        const blob = new Blob([newBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "selected-pages.pdf";
+        a.click();
+
+        URL.revokeObjectURL(url);
       });
     }
     // // /////
