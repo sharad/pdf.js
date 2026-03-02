@@ -2541,25 +2541,34 @@ PDFViewerApplication.initializedPromise.then(() => {
   }
 
   btn.addEventListener("click", () => {
+    console.log("Export button clicked");
+
     const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
 
-    if (!thumbnailViewer) {
-      console.error("Thumbnail viewer not ready");
-      return;
-    }
+    // Get selected pages from checkboxes
+    const selectedPages = Array.from(
+      thumbnailViewer.container.querySelectorAll(
+        'input[type="checkbox"]:checked'
+      )
+    ).map(cb =>
+      parseInt(cb.parentElement.getAttribute("page-number"), 10)
+    );
 
-    const pagesMapper = thumbnailViewer._pagesMapper;
+    console.log("Selected pages:", selectedPages);
 
-    if (!pagesMapper) {
-      console.error("PagesMapper not available");
+    if (!selectedPages.length) {
+      alert("No pages selected");
       return;
     }
 
     PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
       source: PDFViewerApplication,
-      data: pagesMapper.getPageMappingForSaving(),
+      data: {
+        pageNumbers: Uint32Array.from(selectedPages)
+      }
     });
-  });
+  }
+);
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
