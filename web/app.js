@@ -2220,27 +2220,6 @@ const PDFViewerApplication = {
     // // /////
 
 
-    const exportBtn = document.getElementById("exportSelectedButton");
-      .addEventListener("click", () => {
-        const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
-
-        if (!thumbnailViewer) {
-          console.error("Thumbnail viewer not ready");
-          return;
-        }
-
-        const pagesMapper = thumbnailViewer._pagesMapper;
-
-        if (!pagesMapper) {
-          console.error("PagesMapper not available");
-          return;
-        }
-
-        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-          source: PDFViewerApplication,
-          data: pagesMapper.getPageMappingForSaving(),
-        });
-      });
 
 
   },
