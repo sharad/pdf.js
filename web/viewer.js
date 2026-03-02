@@ -339,25 +339,56 @@ function webViewerLoad() {
   PDFViewerApplication.run(config);
 
   // ✅ ADD THIS HERE
-  PDFViewerApplication.eventBus.on("pagesloaded", () => {
-    console.log("Pages fully loaded");
+  // PDFViewerApplication.eventBus.on("pagesloaded", () => {
+  //   console.log("Pages fully loaded");
 
-    document.getElementById("exportPages")?.addEventListener("click", () => {
-      console.log("Export button clicked");
+  //   document.getElementById("exportPages")?.addEventListener("click", () => {
+  //     console.log("Export button clicked");
 
-      const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+  //     const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
 
-      if (!thumbnailViewer?._pagesMapper) {
-        console.error("PagesMapper still not ready");
-        return;
-      }
+  //     if (!thumbnailViewer?._pagesMapper) {
+  //       console.error("PagesMapper still not ready");
+  //       return;
+  //     }
 
-      PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-        source: PDFViewerApplication,
-        data: thumbnailViewer._pagesMapper.getPageMappingForSaving(),
+  //     PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+  //       source: PDFViewerApplication,
+  //       data: thumbnailViewer._pagesMapper.getPageMappingForSaving(),
+  //     });
+  //   });
+  // });
+
+
+  PDFViewerApplication.initializedPromise.then(() => {
+    console.log("Viewer fully initialized");
+
+    const eventBus = PDFViewerApplication.eventBus;
+
+    eventBus.on("pagesloaded", () => {
+      console.log("Pages fully loaded");
+
+      document.getElementById("exportPages")?.addEventListener("click", () => {
+        console.log("Export button clicked");
+
+        const thumbnailViewer =
+              PDFViewerApplication.pdfThumbnailViewer;
+
+        if (!thumbnailViewer?._pagesMapper) {
+          console.error("PagesMapper not ready");
+          return;
+        }
+
+        eventBus.dispatch("savepageseditedpdf", {
+          source: PDFViewerApplication,
+          data:
+          thumbnailViewer._pagesMapper.getPageMappingForSaving(),
+        });
       });
     });
   });
+
+
   document.getElementById("exportSelectedButton")?.addEventListener("click", () => {
     console.log("Export button clicked");
     PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
