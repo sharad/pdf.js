@@ -2471,6 +2471,42 @@ const PDFViewerApplication = {
 initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 
+// PDFViewerApplication.initializedPromise.then(() => {
+//   const btn = document.getElementById("exportSelectedButton");
+
+//   if (!btn) {
+//     console.error("Export button not found");
+//     return;
+//   }
+
+//   btn.addEventListener("click", () => {
+//     console.log("EXPORT CLICKED");
+
+//     const viewer =
+//           PDFViewerApplication.pdfThumbnailViewer;
+
+//     const selected =
+//           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+//           // viewer?._getSelectedPages?.() || [];
+
+//     console.log("Selected:", selected);
+
+//     if (!selected.length) {
+//       alert("No pages selected");
+//       return;
+//     }
+
+//     PDFViewerApplication.eventBus.dispatch(
+//       "savepageseditedpdf",
+//       {
+//         source: PDFViewerApplication,
+//         data: { pageNumbers: selected }
+//       }
+//     );
+//   });
+// });
+
+
 PDFViewerApplication.initializedPromise.then(() => {
   const btn = document.getElementById("exportSelectedButton");
 
@@ -2487,7 +2523,7 @@ PDFViewerApplication.initializedPromise.then(() => {
 
     const selected =
           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-          // viewer?._getSelectedPages?.() || [];
+    // viewer?._getSelectedPages?.() || [];
 
     console.log("Selected:", selected);
 
