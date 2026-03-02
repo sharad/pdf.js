@@ -2567,8 +2567,7 @@ PDFViewerApplication.initializedPromise.then(() => {
         pageNumbers: Uint32Array.from(selectedPages)
       }
     });
-  }
-);
+  });
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
