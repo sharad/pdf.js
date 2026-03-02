@@ -2220,6 +2220,9 @@ const PDFViewerApplication = {
     // // /////
 
 
+    const exportBtn = document.getElementById("exportSelectedButton");
+
+
   },
 
   bindWindowEvents() {
