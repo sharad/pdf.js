@@ -1459,3 +1459,7 @@ dialog :link {
     display: none;
   }
 }
+
+.thumbnailSelectionRing.customSelected {
+  box-shadow: 0 0 0 3px red inset;
+}

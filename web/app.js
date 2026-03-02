@@ -600,7 +600,7 @@ const PDFViewerApplication = {
         pageColors,
         abortSignal,
         enableHWA,
-        enableSplitMerge,
+        enableSplitMerge: true,
         manageMenu: appConfig.viewsManager.manageMenu,
         addFileButton: appConfig.viewsManager.viewsManagerAddFileButton,
       });
@@ -2190,6 +2190,31 @@ const PDFViewerApplication = {
       this.onSavePagesEditedPDF.bind(this),
       opts
     );
+
+    //////
+    const exportBtn = document.getElementById("exportSelectedButton");
+
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => {
+        if (!this.pdfThumbnailViewer) return;
+
+        const selected =
+              this.pdfThumbnailViewer.getSelectedPages();
+
+        if (!selected?.length) {
+          alert("No pages selected");
+          return;
+        }
+
+        this.eventBus.dispatch("savepageseditedpdf", {
+          source: this,
+          data: { pageNumbers: selected }
+        });
+      });
+    }
+    /////
+
+
   },
 
   bindWindowEvents() {

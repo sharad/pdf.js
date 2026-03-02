@@ -408,6 +408,13 @@ See https://github.com/adobe-type-tools/cmap-resources
               </div>
               <div id="toolbarViewerRight" class="toolbarHorizontalGroup">
                 <div id="editorModeButtons" class="toolbarHorizontalGroup">
+                  <div>
+                    <button id="exportSelected"
+                      class="toolbarButton"
+                      title="Export Selected Pages">
+                      Export Selected
+                    </button>
+                  </div>
                   <div id="editorComment" class="toolbarButtonWithContainer" hidden="true">
                     <button
                       id="editorCommentButton"
@@ -1281,5 +1288,6 @@ See https://github.com/adobe-type-tools/cmap-resources
     </div>
     <!-- outerContainer -->
     <div id="printContainer"></div>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
   </body>
 </html>

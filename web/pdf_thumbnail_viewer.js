@@ -1301,6 +1301,13 @@ class PDFThumbnailViewer {
 
     return [index, space];
   }
+
+  getSelectedPages() {
+    return this.#selectedPages
+      ? Array.from(this.#selectedPages).sort((a, b) => a - b)
+      : [];
+  }
+
 }
 
 export { PDFThumbnailViewer };
