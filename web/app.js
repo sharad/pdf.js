@@ -2522,7 +2522,47 @@ PDFViewerApplication.initializedPromise.then(() => {
     return;
   }
 
-  btn.addEventListener("click", () => );
+  btn.addEventListener("click", () => {
+  console.log("Export button clicked");
+
+  const { PDFDocument } = await import("pdf-lib");
+
+  const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+
+  const selectedPages = Array.from(
+    thumbnailViewer.container.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    )
+  ).map(cb =>
+    parseInt(cb.parentElement.getAttribute("page-number"), 10) - 1
+  );
+
+  console.log("Selected pages:", selectedPages);
+
+  if (!selectedPages.length) {
+    alert("No pages selected");
+    return;
+  }
+
+  const originalBytes = await PDFViewerApplication.pdfDocument.getData();
+  const srcDoc = await PDFDocument.load(originalBytes);
+  const newDoc = await PDFDocument.create();
+
+  const copiedPages = await newDoc.copyPages(srcDoc, selectedPages);
+  copiedPages.forEach(page => newDoc.addPage(page));
+
+  const newBytes = await newDoc.save();
+
+  const blob = new Blob([newBytes], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "selected-pages.pdf";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
