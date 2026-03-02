@@ -337,6 +337,15 @@ function webViewerLoad() {
     }
   }
   PDFViewerApplication.run(config);
+
+  // ✅ ADD THIS HERE
+  document.getElementById("exportPages")?.addEventListener("click", () => {
+    console.log("Export button clicked");
+    PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+      source: PDFViewerApplication,
+    });
+  });
+
 }
 
 // Block the "load" event until all pages are loaded, to ensure that printing
