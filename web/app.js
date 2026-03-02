@@ -2198,7 +2198,7 @@ const PDFViewerApplication = {
       exportBtn.addEventListener("click", () => {
         console.log("Export button clicked");
 
-        const { PDFDocument } = await import("pdf-lib");
+        const { PDFDocument } = import("pdf-lib");
 
         const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
 
