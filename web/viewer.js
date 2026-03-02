@@ -339,12 +339,6 @@ function webViewerLoad() {
   PDFViewerApplication.run(config);
 
   // ✅ ADD THIS HERE
-  document.getElementById("exportSelectedButton")?.addEventListener("click", () => {
-    console.log("Export button clicked");
-    PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-      source: PDFViewerApplication,
-    });
-  });
   PDFViewerApplication.eventBus.on("pagesloaded", () => {
     console.log("Pages fully loaded");
 
@@ -362,6 +356,12 @@ function webViewerLoad() {
         source: PDFViewerApplication,
         data: thumbnailViewer._pagesMapper.getPageMappingForSaving(),
       });
+    });
+  });
+  document.getElementById("exportSelectedButton")?.addEventListener("click", () => {
+    console.log("Export button clicked");
+    PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+      source: PDFViewerApplication,
     });
   });
 
