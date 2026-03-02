@@ -2196,26 +2196,51 @@ const PDFViewerApplication = {
 
     if (exportBtn) {
       exportBtn.addEventListener("click", () => {
-        console.log("EXPORT CLICKED 1");
-        if (!this.pdfThumbnailViewer) return;
-        console.log("EXPORT CLICKED 2");
+        const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
 
-        const selected =
-              // viewer._getSelectedPages?.() || [];
-              PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-
-        console.log("Selected pages:", selected);
-
-        if (!selected?.length) {
-          alert("No pages selected");
+        if (!thumbnailViewer) {
+          console.error("Thumbnail viewer not ready");
           return;
         }
 
-        this.eventBus.dispatch("savepageseditedpdf", {
-          source: this,
-          data: { pageNumbers: selected }
+        const pagesMapper = thumbnailViewer._pagesMapper;
+
+        if (!pagesMapper) {
+          console.error("PagesMapper not available");
+          return;
+        }
+
+        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+          source: PDFViewerApplication,
+          data: pagesMapper.getPageMappingForSaving(),
         });
-      });
+      }
+
+
+
+
+      //   {
+      //   console.log("EXPORT CLICKED 1");
+      //   if (!this.pdfThumbnailViewer) return;
+      //   console.log("EXPORT CLICKED 2");
+
+      //   const selected =
+      //         // viewer._getSelectedPages?.() || [];
+      //         PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+
+      //   console.log("Selected pages:", selected);
+
+      //   if (!selected?.length) {
+      //     alert("No pages selected");
+      //     return;
+      //   }
+
+      //   this.eventBus.dispatch("savepageseditedpdf", {
+      //     source: this,
+      //     data: { pageNumbers: selected }
+      //   });
+      // }
+                                );
     }
     // // /////
 
