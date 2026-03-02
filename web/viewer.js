@@ -345,6 +345,25 @@ function webViewerLoad() {
       source: PDFViewerApplication,
     });
   });
+  PDFViewerApplication.eventBus.on("pagesloaded", () => {
+    console.log("Pages fully loaded");
+
+    document.getElementById("exportPages")?.addEventListener("click", () => {
+      console.log("Export button clicked");
+
+      const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+
+      if (!thumbnailViewer?._pagesMapper) {
+        console.error("PagesMapper still not ready");
+        return;
+      }
+
+      PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
+        source: PDFViewerApplication,
+        data: thumbnailViewer._pagesMapper.getPageMappingForSaving(),
+      });
+    });
+  });
 
 }
 
