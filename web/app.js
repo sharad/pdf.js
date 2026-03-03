@@ -2400,27 +2400,63 @@ const PDFViewerApplication = {
     this.pdfViewer.onPagesEdited(data);
   },
 
+  // async onSavePagesEditedPDF({ data: extractParams }) {
+  //   console.log("SAVE EVENT RECEIVED", extractParams);
+  //   if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("TESTING")) {
+  //     return;
+  //   }
+  //   if (!this.pdfDocument) {
+  //     return;
+  //   }
+  //   const modifiedPdfBytes = await this.pdfDocument.extractPages(extractParams);
+  //   if (!modifiedPdfBytes) {
+  //     console.error(
+  //       "Something wrong happened when saving the edited PDF.\nPlease file a bug."
+  //     );
+  //     return;
+  //   }
+  //   this.downloadManager.download(
+  //     modifiedPdfBytes,
+  //     this._downloadUrl,
+  //     this._docFilename
+  //   );
+  // },
+
+
   async onSavePagesEditedPDF({ data: extractParams }) {
     console.log("SAVE EVENT RECEIVED", extractParams);
-    if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("TESTING")) {
-      return;
-    }
+
     if (!this.pdfDocument) {
       return;
     }
-    const modifiedPdfBytes = await this.pdfDocument.extractPages(extractParams);
-    if (!modifiedPdfBytes) {
-      console.error(
-        "Something wrong happened when saving the edited PDF.\nPlease file a bug."
-      );
-      return;
-    }
+
+    // 1️⃣ Get original PDF bytes
+    const originalBytes = await this.pdfDocument.getData();
+
+    // 2️⃣ Load into pdf-lib
+    const pdfLibDoc = await PDFLib.PDFDocument.load(originalBytes);
+    const newPdf = await PDFLib.PDFDocument.create();
+
+    // 3️⃣ Convert Uint32Array → normal array
+    const selectedPages = Array.from(extractParams.pageNumbers);
+
+    // 4️⃣ pdf-lib uses zero-based indexing
+    const zeroBased = selectedPages.map(p => p - 1);
+
+    // 5️⃣ Copy selected pages
+    const copiedPages = await newPdf.copyPages(pdfLibDoc, zeroBased);
+    copiedPages.forEach(p => newPdf.addPage(p));
+
+    // 6️⃣ Save new PDF
+    const newBytes = await newPdf.save();
+
+    // 7️⃣ Download
     this.downloadManager.download(
-      modifiedPdfBytes,
+      newBytes,
       this._downloadUrl,
-      this._docFilename
+      this._docFilename.replace(".pdf", "_extracted.pdf")
     );
-  },
+  }
 
   _accumulateTicks(ticks, prop) {
     // If the direction changed, reset the accumulated ticks.
