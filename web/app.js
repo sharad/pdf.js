@@ -2513,41 +2513,41 @@ const PDFViewerApplication = {
 initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 
-PDFViewerApplication.initializedPromise.then(() => {
-  const btn = document.getElementById("exportSelectedButton");
+// PDFViewerApplication.initializedPromise.then(() => {
+//   const btn = document.getElementById("exportSelectedButton");
 
-  if (!btn) {
-    console.error("Export button not found");
-    return;
-  }
+//   if (!btn) {
+//     console.error("Export button not found");
+//     return;
+//   }
 
-  btn.addEventListener("click", () => {
-    console.log("EXPORT CLICKED");
+//   btn.addEventListener("click", () => {
+//     console.log("EXPORT CLICKED");
 
-    const viewer =
-          PDFViewerApplication.pdfThumbnailViewer;
+//     const viewer =
+//           PDFViewerApplication.pdfThumbnailViewer;
 
-    const selected =
-          PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-          // viewer?._getSelectedPages?.() || [];
+//     const selected =
+//           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+//           // viewer?._getSelectedPages?.() || [];
 
-    console.log("Selected:", selected);
+//     console.log("Selected:", selected);
 
-    if (!selected.length) {
-      alert("No pages selected");
-      return;
-    }
+//     if (!selected.length) {
+//       alert("No pages selected");
+//       return;
+//     }
 
-    PDFViewerApplication.eventBus.dispatch(
-      "savepageseditedpdf",
-      {
-        source: PDFViewerApplication,
-        // data: { pageNumbers: Uint32Array.from(selected) }
-        data: { pageNumbers: selected }
-      }
-    );
-  });
-});
+//     PDFViewerApplication.eventBus.dispatch(
+//       "savepageseditedpdf",
+//       {
+//         source: PDFViewerApplication,
+//         // data: { pageNumbers: Uint32Array.from(selected) }
+//         data: { pageNumbers: selected }
+//       }
+//     );
+//   });
+// });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
   const HOSTED_VIEWER_ORIGINS = new Set([
