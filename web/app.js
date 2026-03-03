@@ -2213,7 +2213,7 @@ const PDFViewerApplication = {
 
         this.eventBus.dispatch("savepageseditedpdf", {
           source: this,
-          data: { pages: selected }
+          data: { pageNumbers: Uint32Array.from(selected) }
         });
       });
     }
