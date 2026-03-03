@@ -2192,39 +2192,33 @@ const PDFViewerApplication = {
     );
 
     // // //////
-    const exportBtn = document.getElementById("exportSelectedButton");
+    // const exportBtn = document.getElementById("exportSelectedButton");
 
-    if (exportBtn) {
-      exportBtn.addEventListener("click", () => {
-        console.log("Export button clicked");
+    // if (exportBtn) {
+    //   exportBtn.addEventListener("click", () => {
+    //     console.log("EXPORT CLICKED 1");
+    //     if (!this.pdfThumbnailViewer) return;
+    //     console.log("EXPORT CLICKED 2");
 
-        const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+    //     const selected =
+    //           // viewer._getSelectedPages?.() || [];
+    //           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
 
-        // Get selected pages from checkboxes
-        const selectedPages = Array.from(
-          thumbnailViewer.container.querySelectorAll(
-            'input[type="checkbox"]:checked'
-          )
-        ).map(cb =>
-          parseInt(cb.parentElement.getAttribute("page-number"), 10)
-        );
+    //     console.log("Selected pages:", selected);
 
-        console.log("Selected pages:", selectedPages);
+    //     if (!selected?.length) {
+    //       alert("No pages selected");
+    //       return;
+    //     }
 
-        if (!selectedPages.length) {
-          alert("No pages selected");
-          return;
-        }
-
-        PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-          source: PDFViewerApplication,
-          data: {
-            pageNumbers: Uint32Array.from(selectedPages)
-          }
-        });
-      });
-    }
+    //     this.eventBus.dispatch("savepageseditedpdf", {
+    //       source: this,
+    //       data: { pageNumbers: selected }
+    //     });
+    //   });
+    // }
     // // /////
+
 
   },
 
@@ -2478,42 +2472,6 @@ const PDFViewerApplication = {
 initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 
-// PDFViewerApplication.initializedPromise.then(() => {
-//   const btn = document.getElementById("exportSelectedButton");
-
-//   if (!btn) {
-//     console.error("Export button not found");
-//     return;
-//   }
-
-//   btn.addEventListener("click", () => {
-//     console.log("EXPORT CLICKED");
-
-//     const viewer =
-//           PDFViewerApplication.pdfThumbnailViewer;
-
-//     const selected =
-//           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-//           // viewer?._getSelectedPages?.() || [];
-
-//     console.log("Selected:", selected);
-
-//     if (!selected.length) {
-//       alert("No pages selected");
-//       return;
-//     }
-
-//     PDFViewerApplication.eventBus.dispatch(
-//       "savepageseditedpdf",
-//       {
-//         source: PDFViewerApplication,
-//         data: { pageNumbers: selected }
-//       }
-//     );
-//   });
-// });
-
-
 PDFViewerApplication.initializedPromise.then(() => {
   const btn = document.getElementById("exportSelectedButton");
 
@@ -2522,34 +2480,31 @@ PDFViewerApplication.initializedPromise.then(() => {
     return;
   }
 
-  btn.addEventListener("click", () => {
-    console.log("Export button clicked");
+  // btn.addEventListener("click", () => {
+  //   console.log("EXPORT CLICKED");
 
-    const thumbnailViewer = PDFViewerApplication.pdfThumbnailViewer;
+  //   const viewer =
+  //         PDFViewerApplication.pdfThumbnailViewer;
 
-    // Get selected pages from checkboxes
-    const selectedPages = Array.from(
-      thumbnailViewer.container.querySelectorAll(
-        'input[type="checkbox"]:checked'
-      )
-    ).map(cb =>
-      parseInt(cb.parentElement.getAttribute("page-number"), 10)
-    );
+  //   const selected =
+  //         PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+  //         // viewer?._getSelectedPages?.() || [];
 
-    console.log("Selected pages:", selectedPages);
+  //   console.log("Selected:", selected);
 
-    if (!selectedPages.length) {
-      alert("No pages selected");
-      return;
-    }
+  //   if (!selected.length) {
+  //     alert("No pages selected");
+  //     return;
+  //   }
 
-    PDFViewerApplication.eventBus.dispatch("savepageseditedpdf", {
-      source: PDFViewerApplication,
-      data: {
-        pageNumbers: Uint32Array.from(selectedPages)
-      }
-    });
-  });
+  //   PDFViewerApplication.eventBus.dispatch(
+  //     "savepageseditedpdf",
+  //     {
+  //       source: PDFViewerApplication,
+  //       data: { pageNumbers: selected }
+  //     }
+  //   );
+  // });
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
