@@ -545,6 +545,8 @@ const PDFViewerApplication = {
       viewerAlert: appConfig.viewerAlert,
       eventBus,
       renderingQueue,
+      enableSplitMerge: true,
+      enableEditing: true,
       linkService,
       downloadManager,
       altTextManager,
@@ -2191,33 +2193,34 @@ const PDFViewerApplication = {
       opts
     );
 
-    // // //////
-    // const exportBtn = document.getElementById("exportSelectedButton");
+    // //////
+    const exportBtn = document.getElementById("exportSelectedButton");
 
-    // if (exportBtn) {
-    //   exportBtn.addEventListener("click", () => {
-    //     console.log("EXPORT CLICKED 1");
-    //     if (!this.pdfThumbnailViewer) return;
-    //     console.log("EXPORT CLICKED 2");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => {
+        console.log("EXPORT CLICKED 1");
+        if (!this.pdfThumbnailViewer) return;
+        console.log("EXPORT CLICKED 2");
 
-    //     const selected =
-    //           // viewer._getSelectedPages?.() || [];
-    //           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+        const selected =
+              // viewer._getSelectedPages?.() || [];
+              PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
 
-    //     console.log("Selected pages:", selected);
+        console.log("Selected pages:", selected);
 
-    //     if (!selected?.length) {
-    //       alert("No pages selected");
-    //       return;
-    //     }
+        if (!selected?.length) {
+          alert("No pages selected");
+          return;
+        }
 
-    //     this.eventBus.dispatch("savepageseditedpdf", {
-    //       source: this,
-    //       data: { pageNumbers: selected }
-    //     });
-    //   });
-    // }
-    // // /////
+        this.eventBus.dispatch("savepageseditedpdf", {
+          source: this,
+          // data: { pageNumbers: Uint32Array.from(selected) }
+          data: { pageNumbers: selected }
+        });
+      });
+    }
+    // /////
 
 
   },
@@ -2398,25 +2401,63 @@ const PDFViewerApplication = {
     this.pdfViewer.onPagesEdited(data);
   },
 
+  // async onSavePagesEditedPDF({ data: extractParams }) {
+  //   console.log("SAVE EVENT RECEIVED", extractParams);
+  //   if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("TESTING")) {
+  //     return;
+  //   }
+  //   if (!this.pdfDocument) {
+  //     return;
+  //   }
+  //   const modifiedPdfBytes = await this.pdfDocument.extractPages(extractParams);
+  //   if (!modifiedPdfBytes) {
+  //     console.error(
+  //       "Something wrong happened when saving the edited PDF.\nPlease file a bug."
+  //     );
+  //     return;
+  //   }
+  //   this.downloadManager.download(
+  //     modifiedPdfBytes,
+  //     this._downloadUrl,
+  //     this._docFilename
+  //   );
+  // },
+
+
   async onSavePagesEditedPDF({ data: extractParams }) {
     console.log("SAVE EVENT RECEIVED", extractParams);
-    if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("TESTING")) {
-      return;
-    }
+
     if (!this.pdfDocument) {
       return;
     }
-    const modifiedPdfBytes = await this.pdfDocument.extractPages(extractParams);
-    if (!modifiedPdfBytes) {
-      console.error(
-        "Something wrong happened when saving the edited PDF.\nPlease file a bug."
-      );
-      return;
-    }
+
+    // 1️⃣ Get original PDF bytes
+    const originalBytes = await this.pdfDocument.getData();
+
+    // 2️⃣ Load into pdf-lib
+    const pdfLibDoc = await PDFLib.PDFDocument.load(originalBytes);
+    const newPdf = await PDFLib.PDFDocument.create();
+
+    // // 3️⃣ Convert Uint32Array → normal array
+    // const selectedPages = Array.from(extractParams.pageNumbers);
+
+    const selectedPages = extractParams.pageNumbers;
+
+    // 4️⃣ pdf-lib uses zero-based indexing
+    const zeroBased = selectedPages.map(p => p - 1);
+
+    // 5️⃣ Copy selected pages
+    const copiedPages = await newPdf.copyPages(pdfLibDoc, zeroBased);
+    copiedPages.forEach(p => newPdf.addPage(p));
+
+    // 6️⃣ Save new PDF
+    const newBytes = await newPdf.save();
+
+    // 7️⃣ Download
     this.downloadManager.download(
-      modifiedPdfBytes,
+      newBytes,
       this._downloadUrl,
-      this._docFilename
+      this._docFilename.replace(".pdf", "_extracted.pdf")
     );
   },
 
@@ -2480,31 +2521,32 @@ PDFViewerApplication.initializedPromise.then(() => {
     return;
   }
 
-  // btn.addEventListener("click", () => {
-  //   console.log("EXPORT CLICKED");
+  btn.addEventListener("click", () => {
+    console.log("EXPORT CLICKED");
 
-  //   const viewer =
-  //         PDFViewerApplication.pdfThumbnailViewer;
+    const viewer =
+          PDFViewerApplication.pdfThumbnailViewer;
 
-  //   const selected =
-  //         PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
-  //         // viewer?._getSelectedPages?.() || [];
+    const selected =
+          PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+          // viewer?._getSelectedPages?.() || [];
 
-  //   console.log("Selected:", selected);
+    console.log("Selected:", selected);
 
-  //   if (!selected.length) {
-  //     alert("No pages selected");
-  //     return;
-  //   }
+    if (!selected.length) {
+      alert("No pages selected");
+      return;
+    }
 
-  //   PDFViewerApplication.eventBus.dispatch(
-  //     "savepageseditedpdf",
-  //     {
-  //       source: PDFViewerApplication,
-  //       data: { pageNumbers: selected }
-  //     }
-  //   );
-  // });
+    PDFViewerApplication.eventBus.dispatch(
+      "savepageseditedpdf",
+      {
+        source: PDFViewerApplication,
+        // data: { pageNumbers: Uint32Array.from(selected) }
+        data: { pageNumbers: selected }
+      }
+    );
+  });
 });
 
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
