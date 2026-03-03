@@ -2191,33 +2191,33 @@ const PDFViewerApplication = {
       opts
     );
 
-    // // //////
-    // const exportBtn = document.getElementById("exportSelectedButton");
+    // //////
+    const exportBtn = document.getElementById("exportSelectedButton");
 
-    // if (exportBtn) {
-    //   exportBtn.addEventListener("click", () => {
-    //     console.log("EXPORT CLICKED 1");
-    //     if (!this.pdfThumbnailViewer) return;
-    //     console.log("EXPORT CLICKED 2");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => {
+        console.log("EXPORT CLICKED 1");
+        if (!this.pdfThumbnailViewer) return;
+        console.log("EXPORT CLICKED 2");
 
-    //     const selected =
-    //           // viewer._getSelectedPages?.() || [];
-    //           PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
+        const selected =
+              // viewer._getSelectedPages?.() || [];
+              PDFViewerApplication.pdfThumbnailViewer.getSelectedPages() || [];
 
-    //     console.log("Selected pages:", selected);
+        console.log("Selected pages:", selected);
 
-    //     if (!selected?.length) {
-    //       alert("No pages selected");
-    //       return;
-    //     }
+        if (!selected?.length) {
+          alert("No pages selected");
+          return;
+        }
 
-    //     this.eventBus.dispatch("savepageseditedpdf", {
-    //       source: this,
-    //       data: { pageNumbers: selected }
-    //     });
-    //   });
-    // }
-    // // /////
+        this.eventBus.dispatch("savepageseditedpdf", {
+          source: this,
+          data: { pageNumbers: selected }
+        });
+      });
+    }
+    // /////
 
 
   },
