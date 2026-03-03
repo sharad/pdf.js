@@ -545,6 +545,7 @@ const PDFViewerApplication = {
       viewerAlert: appConfig.viewerAlert,
       eventBus,
       renderingQueue,
+      nableSplitMerge: true,
       linkService,
       downloadManager,
       altTextManager,
