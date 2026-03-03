@@ -2401,29 +2401,6 @@ const PDFViewerApplication = {
     this.pdfViewer.onPagesEdited(data);
   },
 
-  // async onSavePagesEditedPDF({ data: extractParams }) {
-  //   console.log("SAVE EVENT RECEIVED", extractParams);
-  //   if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("TESTING")) {
-  //     return;
-  //   }
-  //   if (!this.pdfDocument) {
-  //     return;
-  //   }
-  //   const modifiedPdfBytes = await this.pdfDocument.extractPages(extractParams);
-  //   if (!modifiedPdfBytes) {
-  //     console.error(
-  //       "Something wrong happened when saving the edited PDF.\nPlease file a bug."
-  //     );
-  //     return;
-  //   }
-  //   this.downloadManager.download(
-  //     modifiedPdfBytes,
-  //     this._downloadUrl,
-  //     this._docFilename
-  //   );
-  // },
-
-
   async onSavePagesEditedPDF({ data: extractParams }) {
     console.log("SAVE EVENT RECEIVED", extractParams);
 
