@@ -2501,7 +2501,7 @@ PDFViewerApplication.initializedPromise.then(() => {
       "savepageseditedpdf",
       {
         source: PDFViewerApplication,
-        data: { pageNumbers: selected }
+        data: { pages: selected }
       }
     );
   });
