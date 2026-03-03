@@ -546,6 +546,7 @@ const PDFViewerApplication = {
       eventBus,
       renderingQueue,
       enableSplitMerge: true,
+      enableEditing = true,
       linkService,
       downloadManager,
       altTextManager,
