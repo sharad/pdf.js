@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Custom PDF.js Viewer",
+  "version": "1.0",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "file:///*"
+  ],
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "web/*",
+        "pdf.mjs",
+        "pdf.worker.mjs"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
