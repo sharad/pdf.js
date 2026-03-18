@@ -26,7 +26,7 @@
  */
 /******/ // The require scope
 /******/ var __webpack_require__ = {};
-/******/ 
+/******/
 /************************************************************************/
 /******/ /* webpack/runtime/define property getters */
 /******/ (() => {
@@ -39,12 +39,12 @@
 /******/ 		}
 /******/ 	};
 /******/ })();
-/******/ 
+/******/
 /******/ /* webpack/runtime/hasOwnProperty shorthand */
 /******/ (() => {
 /******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ })();
-/******/ 
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 
@@ -19012,13 +19012,18 @@ const PDFViewerApplication = {
 initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 {
-  const HOSTED_VIEWER_ORIGINS = new Set(["null", "http://mozilla.github.io", "https://mozilla.github.io"]);
+  const HOSTED_VIEWER_ORIGINS = new Set(["null",
+                                         "http://mozilla.github.io",
+                                         "https://mozilla.github.io",
+                                         window.location.origin   // ✅ allow extension origin
+                                        ]);
   var validateFileURL = function (file) {
     if (!file) {
       return;
     }
     const viewerOrigin = URL.parse(window.location)?.origin || "null";
-    if (HOSTED_VIEWER_ORIGINS.has(viewerOrigin)) {
+    if (HOSTED_VIEWER_ORIGINS.has(viewerOrigin) ||
+        viewerOrigin.startsWith("moz-extension://")) {
       return;
     }
     const fileOrigin = URL.parse(file, window.location)?.origin;
